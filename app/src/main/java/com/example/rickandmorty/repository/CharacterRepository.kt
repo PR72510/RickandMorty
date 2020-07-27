@@ -20,27 +20,39 @@ class CharacterRepository @Inject constructor(
     private val localDataSource: CharacterDao
 ) {
 
-    suspend fun getCharacter(id: Int): Flow<Resource<List<Character>>> {
+    suspend fun getCharacters(): Flow<Resource<List<Character>>> {
         return flow {
-         emit(Resource.Loading())
-            if (AppUtils.isInternetAvailable(context)){
+            emit(Resource.Loading())
+            if (AppUtils.isInternetAvailable(context)) {
                 val remoteData = remoteDataSource.getCharacters()
-                if(remoteData is Resource.Success){
+                if (remoteData is Resource.Success) {
                     localDataSource.insertAll(remoteData.data!!.results)
                     emit(Resource.Success(localDataSource.getAllCharacters()))
-                }
-                else if(remoteData is Resource.Error){
+                } else if (remoteData is Resource.Error) {
                     emit(Resource.Error(remoteData.message!!))
                 }
-            }
-            else{
+            } else {
                 val localData = localDataSource.getAllCharacters()
                 emit(Resource.Success(localData))
             }
         }
     }
 
-//    suspend fun getCharacters(): Flow<Resource<List<Character>>> {
-//
-//    }
+    suspend fun getCharacter(id: Int): Flow<Resource<Character>> {
+        return flow {
+            emit(Resource.Loading())
+            if (AppUtils.isInternetAvailable(context)) {
+                val remoteData = remoteDataSource.getCharacter(id)
+                if (remoteData is Resource.Success) {
+                    localDataSource.insert(remoteData.data!!)
+                    emit(Resource.Success(localDataSource.getCharacter(id)))
+                } else if (remoteData is Resource.Error) {
+                    emit(Resource.Error(remoteData.message!!))
+                }
+            } else {
+                val localData = localDataSource.getCharacter(id)
+                emit(Resource.Success(localData))
+            }
+        }
+    }
 }

@@ -48,11 +48,4 @@ object AppModule {
     @Provides
     fun provideCharacterDao(db: AppDatabase) = db.characterDao()
 
-//    @Provides
-//    fun provideRepository(
-//        @ActivityContext context: Context,
-//        remoteDataSource: CharacterRemoteDataSource,
-//        localDataSource: CharacterDao
-//    ) = CharacterRepository(context, remoteDataSource, localDataSource)
-
 }

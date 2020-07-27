@@ -1,4 +1,4 @@
-package com.example.rickandmorty.ui.characters
+package com.example.rickandmorty.ui.characterdetail
 
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LiveData
@@ -13,22 +13,21 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 /**
- * Created by PR72510 on 23/7/20.
+ * Created by PR72510 on 27/7/20.
  */
-
-class CharactersViewModel @ViewModelInject constructor(
+class CharacterDetailViewModel @ViewModelInject constructor(
     private val repository: CharacterRepository
 ) : ViewModel() {
 
-    private val _characters = MutableLiveData<Resource<List<Character>>>()
+    private val _character = MutableLiveData<Resource<Character>>()
 
-    val characters: LiveData<Resource<List<Character>>>
-        get() = _characters
+    val character: LiveData<Resource<Character>>
+        get() = _character
 
-    fun getAllCharacters(){
+    fun getCharacter(id: Int){
         viewModelScope.launch(Dispatchers.IO) {
-            repository.getCharacters().collect {
-                    _characters.postValue(it)
+            repository.getCharacter(id).collect {
+                _character.postValue(it)
             }
         }
     }
