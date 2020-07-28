@@ -15,7 +15,8 @@ class CharactersAdapter(val listener: CharacterClickListener) :
     var characterList = emptyList<Character>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CharactersViewHolder {
-        val binding = ItemCharacterBinding.inflate(LayoutInflater.from(parent.context))
+        val binding =
+            ItemCharacterBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return CharactersViewHolder(binding)
     }
 
