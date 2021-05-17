@@ -1,6 +1,7 @@
 package com.example.rickandmorty.local
 
 import androidx.lifecycle.LiveData
+import androidx.paging.PagingSource
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
@@ -14,7 +15,7 @@ import com.example.rickandmorty.models.Character
 interface CharacterDao {
 
     @Query("SELECT * FROM characters")
-    suspend fun getAllCharacters(): List<Character>
+    fun getAllCharacters(): PagingSource<Int,Character>
 
     @Query("SELECT * FROM characters where id= :id")
     suspend fun getCharacter(id: Int): Character
@@ -24,4 +25,7 @@ interface CharacterDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(character: Character)
+
+    @Query("DELETE FROM characters")
+    suspend fun clearCharacters()
 }

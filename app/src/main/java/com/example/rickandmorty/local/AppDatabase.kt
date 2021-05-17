@@ -5,15 +5,20 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.example.rickandmorty.models.Character
+import com.example.rickandmorty.models.RemoteKeys
 
 /**
  * Created by PR72510 on 24/7/20.
  */
 
-@Database(entities = [Character::class], version = 1, exportSchema = false)
+@Database(
+    entities = [Character::class, RemoteKeys::class],
+    version = 1, exportSchema = false
+)
 abstract class AppDatabase : RoomDatabase() {
 
-    abstract fun characterDao() : CharacterDao
+    abstract fun characterDao(): CharacterDao
+    abstract fun remoteKeyDao(): RemoteKeyDao
 
     companion object {
         @Volatile
@@ -27,7 +32,7 @@ abstract class AppDatabase : RoomDatabase() {
             }
 
         private fun buildDatabase(appContext: Context) =
-            Room.databaseBuilder(appContext, AppDatabase::class.java, "characters")
+            Room.databaseBuilder(appContext, AppDatabase::class.java, "r_m_characters")
                 .fallbackToDestructiveMigration()
                 .build()
     }

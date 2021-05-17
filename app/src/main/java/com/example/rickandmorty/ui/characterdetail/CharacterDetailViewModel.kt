@@ -8,14 +8,18 @@ import androidx.lifecycle.viewModelScope
 import com.example.rickandmorty.models.Character
 import com.example.rickandmorty.repository.CharacterRepository
 import com.example.rickandmorty.util.Resource
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 /**
  * Created by PR72510 on 27/7/20.
  */
-class CharacterDetailViewModel @ViewModelInject constructor(
+
+@HiltViewModel
+class CharacterDetailViewModel @Inject constructor(
     private val repository: CharacterRepository
 ) : ViewModel() {
 

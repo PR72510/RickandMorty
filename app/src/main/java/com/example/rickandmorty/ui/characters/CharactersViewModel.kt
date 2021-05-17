@@ -1,35 +1,36 @@
 package com.example.rickandmorty.ui.characters
 
-import androidx.hilt.lifecycle.ViewModelInject
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.paging.PagingData
+import androidx.paging.cachedIn
 import com.example.rickandmorty.models.Character
 import com.example.rickandmorty.repository.CharacterRepository
-import com.example.rickandmorty.util.Resource
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 /**
  * Created by PR72510 on 23/7/20.
  */
 
-class CharactersViewModel @ViewModelInject constructor(
+@HiltViewModel
+class CharactersViewModel @Inject constructor(
     private val repository: CharacterRepository
 ) : ViewModel() {
 
-    private val _characters = MutableLiveData<Resource<List<Character>>>()
+    private var currentSearchResult: Flow<PagingData<Character>>? = null
 
-    val characters: LiveData<Resource<List<Character>>>
-        get() = _characters
+    fun getAllCharacters(): Flow<PagingData<Character>> {
+        val lastResult = currentSearchResult
+        if(lastResult != null)
+            return lastResult
 
-    fun getAllCharacters(){
-        viewModelScope.launch(Dispatchers.IO) {
-            repository.getCharacters().collect {
-                    _characters.postValue(it)
-            }
-        }
+        val newResult = repository.getCharacterResultStream().cachedIn(viewModelScope)
+        currentSearchResult = newResult
+
+        return newResult
     }
 }

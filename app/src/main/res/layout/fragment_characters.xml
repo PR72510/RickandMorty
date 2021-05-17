@@ -9,7 +9,7 @@
             type="java.util.List&lt;com.example.rickandmorty.models.Character>" />
     </data>
 
-    <FrameLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".ui.characters.CharactersFragment">
@@ -17,8 +17,29 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvCharacters"
             android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <TextView android:id="@+id/emptyList"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
-            data="@{characterList}"/>
+            android:gravity="center"
+            android:text="@string/no_results"
+            android:textSize="24sp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+        <Button
+            android:id="@+id/retry_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Retry"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
 
         <RelativeLayout
             android:id="@+id/rlProgress"
@@ -34,5 +55,5 @@
                 android:layout_centerInParent="true"/>
         </RelativeLayout>
 
-    </FrameLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
