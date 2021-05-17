@@ -10,14 +10,12 @@ import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.rickandmorty.R
 import com.example.rickandmorty.databinding.FragmentCharactersBinding
-import com.example.rickandmorty.util.Resource
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -81,7 +79,10 @@ class CharactersFragment : Fragment(), CharacterClickListener {
     private fun setUpRecyclerView() {
         adapter = CharactersAdapter(this)
         binding.rvCharacters.layoutManager = LinearLayoutManager(requireContext())
-        binding.rvCharacters.adapter = adapter
+        binding.rvCharacters.adapter = adapter.withLoadStateHeaderAndFooter(
+            header = CharacterLoadStateAdapter { adapter.retry() },
+            footer = CharacterLoadStateAdapter { adapter.retry() }
+        )
     }
 
     private fun showProgress(isVisible: Boolean) {
@@ -92,7 +93,10 @@ class CharactersFragment : Fragment(), CharacterClickListener {
     }
 
     override fun onCharacterClicked(id: Int) {
-        findNavController().navigate(R.id.action_charactersFragment_to_characterDetailFragment, bundleOf("id" to id))
+        findNavController().navigate(
+            R.id.action_charactersFragment_to_characterDetailFragment,
+            bundleOf("id" to id)
+        )
     }
 
     private fun showEmptyList(show: Boolean) {
