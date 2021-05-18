@@ -2,21 +2,24 @@ package com.example.rickandmorty.ui
 
 import android.app.Activity
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.view.View
-import androidx.constraintlayout.motion.widget.MotionLayout
+import android.widget.ImageView
+import androidx.appcompat.app.AppCompatActivity
 import com.example.rickandmorty.R
 import kotlinx.android.synthetic.main.activity_splash.*
 
 class SplashActivity : AppCompatActivity() {
 
+    private lateinit var splashImage: ImageView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
+        splashImage = findViewById(R.id.ivSplash)
 
+        splashImage.animate().translationY(1700f).setDuration(1500).setStartDelay(500)
 //        motionLayout.setTransitionListener(object : MotionLayout.TransitionListener {
 //            override fun onTransitionTrigger(p0: MotionLayout?, p1: Int, p2: Boolean, p3: Float) {
 //
@@ -38,12 +41,12 @@ class SplashActivity : AppCompatActivity() {
 
         Handler().postDelayed({
             startActivity(Intent(this@SplashActivity, MainActivity::class.java))
-        }, 1500)
+        }, 2000)
     }
 
     override fun onWindowFocusChanged(hasFocus: Boolean) {
         super.onWindowFocusChanged(hasFocus)
-        if(hasFocus)
+        if (hasFocus)
             hideSystemAndUINavigation(this)
     }
 
